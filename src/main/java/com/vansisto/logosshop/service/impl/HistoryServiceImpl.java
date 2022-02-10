@@ -1,11 +1,11 @@
 package com.vansisto.logosshop.service.impl;
 
-import com.vansisto.logosshop.domain.RoleDTO;
-import com.vansisto.logosshop.entity.Role;
+import com.vansisto.logosshop.domain.HistoryDTO;
+import com.vansisto.logosshop.entity.History;
 import com.vansisto.logosshop.exception.AlreadyExistsException;
 import com.vansisto.logosshop.exception.NotFoundException;
-import com.vansisto.logosshop.repository.RoleRepository;
-import com.vansisto.logosshop.service.RoleService;
+import com.vansisto.logosshop.repository.HistoryRepository;
+import com.vansisto.logosshop.service.HistoryService;
 import com.vansisto.logosshop.util.ModelMapperUtil;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
@@ -16,18 +16,16 @@ import org.springframework.transaction.annotation.Transactional;
 import java.util.Objects;
 
 @Service
-public class RoleServiceImpl implements RoleService {
-
+public class HistoryServiceImpl implements HistoryService {
     @Autowired
-    private RoleRepository repository;
+    private HistoryRepository repository;
     @Autowired
     private ModelMapperUtil mapper;
-    
-    private final String ENTITY_NAME = "Role";
+    private final String ENTITY_NAME = "History record";
 
     @Override
     @Transactional
-    public RoleDTO create(RoleDTO dto) {
+    public HistoryDTO create(HistoryDTO dto) {
         if (!Objects.isNull(dto.getId()) && repository.existsById(dto.getId()))
             throw new AlreadyExistsException(ENTITY_NAME, "id", dto.getId());
         return map(repository.save(map(dto)));
@@ -35,7 +33,7 @@ public class RoleServiceImpl implements RoleService {
 
     @Override
     @Transactional
-    public RoleDTO update(RoleDTO dto) {
+    public HistoryDTO update(HistoryDTO dto) {
         if (Objects.isNull(dto.getId()) && !repository.existsById(dto.getId()))
             throw new NotFoundException(ENTITY_NAME, "id", dto.getId());
         return map(repository.save(map(dto)));
@@ -43,7 +41,7 @@ public class RoleServiceImpl implements RoleService {
 
     @Override
     @Transactional
-    public RoleDTO delete(RoleDTO dto) {
+    public HistoryDTO delete(HistoryDTO dto) {
         repository.delete(map(dto));
         return dto;
     }
@@ -57,21 +55,20 @@ public class RoleServiceImpl implements RoleService {
     }
 
     @Override
-    public RoleDTO getEntity(Long id) {
+    public HistoryDTO getEntity(Long id) {
         return map(repository.findById(id).orElseThrow(() -> new NotFoundException(ENTITY_NAME, "id", id)));
     }
 
     @Override
-    public Page<RoleDTO> getAll(PageRequest pageRequest) {
+    public Page<HistoryDTO> getAll(PageRequest pageRequest) {
         return repository.findAll(pageRequest).map(entity -> map(entity));
     }
 
-    private RoleDTO map(Role entity) {
-        return mapper.map(entity, RoleDTO.class);
+    private HistoryDTO map(History entity) {
+        return mapper.map(entity, HistoryDTO.class);
     }
 
-    private Role map(RoleDTO dto) {
-        return mapper.map(dto, Role.class);
+    private History map(HistoryDTO dto) {
+        return mapper.map(dto, History.class);
     }
-
 }

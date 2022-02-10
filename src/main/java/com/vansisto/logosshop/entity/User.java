@@ -13,7 +13,6 @@ import javax.persistence.JoinTable;
 import javax.persistence.ManyToMany;
 import javax.persistence.OneToMany;
 import javax.persistence.OneToOne;
-import javax.persistence.PrimaryKeyJoinColumn;
 import java.util.HashSet;
 import java.util.Set;
 
@@ -36,16 +35,11 @@ public class User extends BaseEntity {
             CascadeType.PERSIST,
             CascadeType.REFRESH
     })
-    @JoinTable(
-            name = "user_role",
-            joinColumns = @JoinColumn(name = "user_id"),
-            inverseJoinColumns = @JoinColumn(name = "role_id")
-    )
+    @JoinTable
     private Set<Role> roles = new HashSet<>();
 
-//    TODO: Why it didn't work. Mapping should be vice versa
     @OneToOne(cascade = CascadeType.ALL)
-    @JoinColumn(name = "user_count_id", referencedColumnName = "id", nullable = false, unique = true)
+    @JoinColumn(nullable = false, unique = true)
     private UserCount userCount;
 
     @OneToMany(mappedBy = "user")
