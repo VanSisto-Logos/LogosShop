@@ -1,5 +1,7 @@
-let port = 8082;
-let url = `http://localhost:${port}/api/`;
+let port = 8080;
+// let host = `http://localhost:${port}/`
+let host = `https://logos-shop.herokuapp.com/`
+let url = `${host}api/`;
 
 class Card {
   constructor(title, description, price, id) {
@@ -68,9 +70,9 @@ class Card {
   }
 }
 
-document.getElementById("login").addEventListener("click", (e) => {
+document.getElementById("login").addEventListener("click", () => {
   console.log("debug");
-  window.location.href = "login.html";
+  window.location.href = "/LogosShop/front/login.html";
 });
 
 let mainEl = document.getElementsByTagName("main")[0];
@@ -87,9 +89,9 @@ fetch(url + "product")
       let orderImageEl = document.querySelector(
         `#cardId-${product.id} #order-image`
       );
-      orderImageEl.addEventListener("click", e => {
+      orderImageEl.addEventListener("click", () => {
         fetch(url + `product/${product.id}`, {
-          method: "POST",
+          method: "PUT",
           headers: {
             Authorization: `Basic ${btoa(
               window.sessionStorage.getItem("email") +
